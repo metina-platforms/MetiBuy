@@ -3,6 +3,7 @@ import React from "react";
 import { ExternalLink } from "./ExternalLink";
 import { Box } from "@/components/ui/box";
 import { Text } from "@/components/ui/text";
+import { HomeIcon } from "lucide-react-native";
 
 export default function EditScreenInfo({ path }: { path: string }) {
   return (

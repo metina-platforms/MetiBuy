@@ -9,8 +9,7 @@ function TabBarIcon(props: {
 }) {
   return <FontAwesome size={24} style={{ marginBottom: -3 }} {...props} />;
 }
-import { HeartIcon, HouseIcon, ShoppingBagIcon} from 'lucide-react-native';
-
+import { HeartIcon, HouseIcon, ShoppingBagIcon } from "lucide-react-native";
 
 export default function TabLayout() {
   return (
@@ -20,7 +19,7 @@ export default function TabLayout() {
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
         tabBarShowLabel: false,
-        tabBarActiveTintColor: '#f29461'
+        tabBarActiveTintColor: "#f29461",
       }}
     >
       <Tabs.Screen
@@ -32,23 +31,25 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="tab1"
+        name="favorite"
         options={{
           title: "Favorites",
           headerShown: false,
-          tabBarIcon: ({ color }) =>  <HeartIcon color={color} size={24} />,
+          tabBarIcon: ({ color }) => <HeartIcon color={color} size={24} />,
         }}
       />
       <Tabs.Screen
-        name="tab2"
+        name="cart"
         options={{
           title: "Cart",
           headerShown: false,
-          tabBarIcon: ({ color }) => <ShoppingBagIcon color={color} size={24} />,
+          tabBarIcon: ({ color }) => (
+            <ShoppingBagIcon color={color} size={24} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="tab3"
+        name="profile"
         options={{
           title: "Profile",
           headerShown: false,
