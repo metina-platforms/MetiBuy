@@ -2,14 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --color-primary: #59C9A5;
+    --color-secondary: #B9E3C6;
+}
+
 .bg-primary {
-    background-color: #f29461;
+    background-color: var(--color-primary);
 }
 
 .text-primary {
-    color: #f29461;
+    color: var(--color-primary);
 }
 
 .border-primary {
-    border-color: #f29461;
+    border-color: var(--color-primary);
 }
+
+.bg-secondary {
+    background-color: var(--color-secondary);
+}
+
+.text-secondary {
+    color: var(--color-secondary);
+}
+
+.border-secondary {
+    border-color: var(--color-secondary);
+}
+

@@ -14,7 +14,11 @@ import {
 import { useState } from "react";
 import { ScrollView } from "react-native";
 import config from '@/config'
-import { Link } from "@react-navigation/native";
+import { signInWithEmailAndPassword } from "firebase/auth"; 
+import { signIn, signUp } from "@/utils/auth";
+// import { Link } from "@react-navigation/native";
+// import { signIn } from "@/utils/auth";
+
 // import { Link } from "@/components/ui/link";
 // import { HelpCircleIcon } from "@/components/ui/icon";
 
@@ -23,15 +27,11 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+
     try {
-      await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      router.push("/auth/login");
+      const response = await signIn(email, password);
+      router.push('/tabs')
     } catch (error) {
       console.error(error);
     }
@@ -46,6 +46,8 @@ export default function Register() {
             onPress={() => {
               // Handle back button press here
               console.log("Back button pressed");
+              router.back()
+
             }}
           >
             <ChevronLeft size={24} color="gray" />
@@ -75,18 +77,16 @@ export default function Register() {
           <VStack className="my-10 gap-4 items-center w-full">
 
             <Input className="border border-gray-300 p-2 w-96 rounded-[10px] h-[3.5rem]">
-              <InputField type="text" placeholder="Email or Phone" />
+              <InputField onChangeText={(text)=> setEmail(text)} type="text" placeholder="Email or Phone" />
             </Input>
 
             <Input className="border border-gray-300 p-2 w-96 rounded-[10px] h-[3.5rem]">
-              <InputField type="password" placeholder="Password" />
+              <InputField onChangeText={(text)=> setPassword(text)} type="password" placeholder="Password" />
             </Input>
 
 
             <Button
-              onPress={() => {
-                // router.push("/auth/login");
-              }}
+              onPress={handleSubmit}
               className=" bg-primary rounded-[10px] h-[3.5rem] w-96"
             >
               <Text className="text-white">Sign In</Text>
@@ -95,9 +95,9 @@ export default function Register() {
             <Text className="text-gray-500 text-sm">
               Don't have an account?
             </Text>
-            <Link action={{ type: "/auth/register", source: "/auth/register",target: "/auth/register" }}>
+            <Button onPress={() => router.push("/auth/register")} variant="link">
               <Text className="text-primary font-bold">Create an account</Text>
-            </Link>
+            </Button>
 
           </VStack>
           <Box className="mt-20">

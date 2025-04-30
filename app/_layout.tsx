@@ -12,6 +12,9 @@ import { useColorScheme } from "@/components/useColorScheme";
 import { Slot } from "expo-router";
 
 import "../global.css";
+import { auth } from "@/utils/firebase";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { AuthProvider } from "@/components/AuthProvider";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -52,6 +55,27 @@ export default function RootLayout() {
   //   return null;
   // }
 
+
+    const [user, setUser] = useState<User | null>(null);
+    const [loadingInitialState, setLoadingInitialState] = useState(true);
+  
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+        if (authUser) {
+          // User is signed in
+          setUser(authUser);
+        } else {
+          // User is signed out
+          setUser(null);
+        }
+        setLoadingInitialState(false);
+      });
+  
+      // Unsubscribe from the listener when the component unmounts
+      return unsubscribe;
+    }, [auth]);
+
+
   return <RootLayoutNav />;
 }
 
@@ -59,10 +83,12 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <GluestackUIProvider mode={colorScheme === "dark" ? "dark" : "light"}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Slot />
-      </ThemeProvider>
-    </GluestackUIProvider>
+    <AuthProvider>
+      <GluestackUIProvider mode={colorScheme === "dark" ? "dark" : "light"}>
+        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <Slot />
+        </ThemeProvider>
+      </GluestackUIProvider>
+    </AuthProvider>
   );
 }

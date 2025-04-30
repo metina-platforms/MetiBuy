@@ -11,10 +11,11 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
-import React from "react";
-import { ChevronRightIcon } from 'lucide-react-native';
+import React, { useEffect, useState } from "react";
+import { ChevronRightIcon, LogOutIcon } from 'lucide-react-native';
 import { RelativePathString } from "expo-router";
-
+import { getCurrentUser } from "@/utils/auth";
+import { updateProfile, User } from "firebase/auth";
 
 const options = [
   {
@@ -53,6 +54,20 @@ function Icon(props: {
 // import { useRouter } from "expo-router";
 
 export default function ProfileTab() {
+  const [user, setUser] = useState<User | null>()
+
+  useEffect(() => {
+    (async () => {
+      const user = await getCurrentUser()
+      //   if(user)
+      //     await updateProfile(user, {
+      //   displayName: "Martin Tembo",
+      // });
+      setUser(user)
+      // console.log("USER: ",user)
+    })();
+
+  }, [])
 
   const router = useRouter();
   return (
@@ -81,11 +96,11 @@ export default function ProfileTab() {
 
         <Box className="mt-10 flex flex-col items-center justify-center ">
           <Text className="text-4xl text-black dark:text-gray-400 font-extrabold ">
-            Jane Doe
+            {user?.displayName}
           </Text>
 
           <Text className="text-sm text-black dark:text-gray-400 text-center">
-            jane.doe@metina.io
+            {user?.email}
           </Text>
         </Box>
 
@@ -110,6 +125,22 @@ export default function ProfileTab() {
                 <ChevronRightIcon size={24} color={'gray'} />
               </Pressable>
             ))}
+
+            <Pressable
+              className="flex-row items-center justify-between p-4 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-700 w-full rounded-md"
+              onPress={() => {
+                // Handle option press
+                // console.log(`Pressed ${option.title}`);
+                // Navigate to the corresponding screen
+                // router.push(option.path as RelativePathString);
+
+              }}
+            >
+              <Text className="text-lg  dark:text-gray-400 font-semibold text-red-400">
+                Logout
+              </Text>
+              <LogOutIcon size={24} color={'gray'} />
+            </Pressable>
           </VStack>
         </Box>
       </Box>

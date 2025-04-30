@@ -1,38 +1,16 @@
-import React from "react";
-import Gradient from "@/assets/Icons/Gradient";
-import DocumentData from "@/assets/Icons/DocumentData";
-import LightBulbPerson from "@/assets/Icons/LightbulbPerson";
-import Rocket from "@/assets/Icons/Rocket";
-import Logo from "@/assets/Icons/Logo";
+import React, { useEffect } from "react";
+
 import { Box } from "@/components/ui/box";
 import { ScrollView } from "react-native";
 import { Text } from "@/components/ui/text";
 
 import { Link, router } from "expo-router";
 import { Button } from "@/components/ui/button";
-import { Heading } from "@/components/ui/heading";
 import config from '@/config'
 
-const FeatureCard = ({ iconSvg: IconSvg, name, desc }: any) => {
-  return (
-    <Box
-      className="flex-column border border-w-1 border-outline-700 md:flex-1 m-2 p-4 rounded"
-      key={name}
-    >
-      <Box className="items-center flex flex-row">
-        <Text>
-          <IconSvg />
-        </Text>
-        <Text className="text-typography-white font-medium ml-2 text-xl">
-          {name}
-        </Text>
-      </Box>
-      <Text className="text-typography-400 mt-2">{desc}</Text>
-    </Box>
-  );
-};
 
 export default function Home() {
+
   return (
     <Box className="flex-1 h-[100vh] bg-white">
       <ScrollView

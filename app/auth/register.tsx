@@ -4,21 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
 import { Input, InputField } from "@/components/ui/input";
-import { Link } from "@/components/ui/link";
 import { Pressable } from "@/components/ui/pressable";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { Spinner } from "@/components/ui/spinner"
 import colors from "tailwindcss/colors"
 import {
   ArrowUpLeftIcon,
   BellIcon,
   ChevronLeft,
-  View,
+  View, WifiOffIcon,
 } from "lucide-react-native";
 import { useState } from "react";
 import { ScrollView } from "react-native";
+import ErrorModal from "@/components/modals/ErrorModal";
+
+
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -27,7 +29,7 @@ export default function Register() {
 
   const [showVerificationModal, setShowVerification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [errorModal, setErrorModal] = useState({ isOpen: false, title: "", description: "", icon: <WifiOffIcon size={24} color="red" />});
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
@@ -40,13 +42,21 @@ export default function Register() {
       setIsLoading(false);
       setShowVerification(true);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       setIsLoading(false);
+      setErrorModal({ isOpen: true, title: "Error", description: (error as Error).message, icon: <WifiOffIcon size={24} color="red" />});
     }
   };
 
   return (
     <>
+      <ErrorModal
+        isOpen={errorModal.isOpen}
+        onClose={() => setErrorModal({ isOpen: false, title: "", description: "", icon: <WifiOffIcon size={24} color="red" />})}
+        title={errorModal.title}
+        description={errorModal.description}
+        icon={<WifiOffIcon size={24} color="red" />}
+      />
     {isLoading && 
     <Box className="flex-1 justify-center items-center bg-opacity-50 ">
       <Spinner size="small" color={colors.gray[500]} />
@@ -61,6 +71,7 @@ export default function Register() {
             onPress={() => {
               // Handle back button press here
               console.log("Back button pressed");
+              router.back()
             }}
           >
             <ChevronLeft size={24} color="gray" />
@@ -120,9 +131,9 @@ export default function Register() {
             <Text className="text-gray-500 text-sm">
               Already have an account?
             </Text>
-            <Link href="/auth/login">
+            <Button onPress={() => router.push("/auth/login")} variant="link">
               <Text className="text-primary font-bold">Login</Text>
-            </Link>
+            </Button>
 
           </VStack>
         </Box>

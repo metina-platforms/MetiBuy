@@ -4,6 +4,7 @@ import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import React from "react";
 import { Input, InputField } from "../ui/input";
+import {VStack} from "@/components/ui/vstack";
 	
   /**
    * @function ErrorModal
@@ -13,7 +14,7 @@ import { Input, InputField } from "../ui/input";
    * @param {boolean} props.isOpen Whether the modal is open or not
    * @returns {ReactElement} The modal component
    */
-function ErrorModal({onClose, isOpen, icon, title, description }: {onClose: () => void, isOpen: boolean, icon: React.ReactNode, title: string, description: string}){
+export default function ErrorModal({onClose, isOpen, icon, title, description, action }: {onClose: () => void, isOpen: boolean, icon: React.ReactNode, title: string, description: string, action?: React.ReactNode }){
        
           return (
             <>
@@ -24,19 +25,24 @@ function ErrorModal({onClose, isOpen, icon, title, description }: {onClose: () =
               >
                 <AlertDialogBackdrop />
                 <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <Heading className="text-typography-950 font-semibold text-center w-full" size="md">
-                      {title}
-                    </Heading>
+                  <AlertDialogHeader className="flex gap-2 items-center bg-gray-600">
+
+
                   </AlertDialogHeader>
                   <AlertDialogBody className="mt-3 mb-4 flex gap-2">
-                    {icon && icon}
+                      <VStack className="flex gap-2 items-center">
+                          {icon && icon}
+
+                          <Heading className="text-typography-950 font-semibold text-center w-full" size="md">
+                              {title}
+                          </Heading>
+                      </VStack>
                     <Text className="text-center" size="sm">
                       {description}
                     </Text>
 
                   </AlertDialogBody>
-                  <AlertDialogFooter className="">
+                  <AlertDialogFooter className="items-center justify-center gap-2">
                     <Button
                       variant="outline"
                       action="secondary"
@@ -45,9 +51,9 @@ function ErrorModal({onClose, isOpen, icon, title, description }: {onClose: () =
                     >
                       <ButtonText>Cancel</ButtonText>
                     </Button>
-                    <Button size="sm" onPress={onClose}>
-                      <ButtonText>Delete</ButtonText>
-                    </Button>
+                      {
+                          action && action
+                      }
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
@@ -55,4 +61,3 @@ function ErrorModal({onClose, isOpen, icon, title, description }: {onClose: () =
           );
         }
 
-export default ErrorModal
